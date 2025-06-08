@@ -1,0 +1,1 @@
+export const aside_navigation_default_is_collapsed = 'aside_navigation_default_is_collapsed';

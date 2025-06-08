@@ -1,0 +1,18 @@
+.component-table-demo-cell-hover-custom {
+    .semi-table-tbody {
+      .semi-table-row:hover {
+        .semi-table-row-cell {
+          background-color: transparent;
+          background-image: none;
+  
+          &.semi-table-cell-fixed-left::before {
+            background-color: transparent;
+          }
+        }
+  
+        .semi-table-row-cell:hover {
+          background-color: rgba(var(--semi-light-green-1), 1);
+        }
+      }
+    }
+  }

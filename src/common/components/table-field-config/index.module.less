@@ -1,0 +1,99 @@
+.scroller {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    margin-top: 1px;
+    margin-bottom: 1px;
+  }
+}
+
+.popover {
+  width: 400px;
+  padding: 24px;
+
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .allCheck {
+    padding: 0 4px 10px;
+    margin: 12px 0;
+  }
+}
+
+.sortList {
+  margin-bottom: 24px;
+}
+
+.options {
+  max-height: 240px;
+  overflow-y: auto;
+  .scroller;
+
+  :global {
+    .semi-checkbox {
+      padding: 4px;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.checkLabel {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  align-items: center;
+  .main {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20px;
+    .label {
+      line-height: 20px;
+      flex: 1;
+      text-align: left;
+    }
+    &:hover {
+      .opt {
+        display: block !important;
+      }
+    }
+  }
+  .opt {
+    color: #555;
+    display: none;
+    :global {
+      .semi-icon {
+        &:not(:last-child) {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+.sortHelper {
+  z-index: 1031;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+
+.validateText {
+  position: absolute;
+  top: 4px;
+}
