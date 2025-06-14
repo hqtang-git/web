@@ -1,7 +1,9 @@
 import { redirect, RouteObject } from 'react-router-dom';
 
-import { Table as DutyTable } from '@/components/duty-table'
-import { Table as UserTable } from '@/components/user-table'
+import { EmptyContent } from '@/common/components/empty';
+import { Table as DutyTable } from '@/components/duty-table';
+import { Table as UserTable } from '@/components/user-table';
+
 import { NavBar } from '../layout/nav-bar';
 import * as PathPattern from './path-pattern';
 
@@ -24,17 +26,12 @@ export const routes = [
     children: [
       {
         index: true,
-        loader: () => redirect(`/${PathPattern.APPROVAL}`),
+        loader: () => redirect(`/${PathPattern.DUTY}`),
       },
       {
         id: PathPattern.APPROVAL,
         path: `/${PathPattern.APPROVAL}`,
-        Component: () => <div>{PathPattern.APPROVAL}</div>,
-      },
-      {
-        id: PathPattern.TASK,
-        path: `/${PathPattern.TASK}`,
-        Component: () => <>{PathPattern.TASK}</>,
+        Component: () => <EmptyContent />,
       },
       {
         id: PathPattern.USER,

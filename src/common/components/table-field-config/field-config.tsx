@@ -260,7 +260,7 @@ export const TableFieldConfig: FC<ITableFieldConfig> = ({
       common: leftList.length,
     };
 
-    const handleSortEnd = ({ oldIndex: from, newIndex: to, collection }, e) => {
+    const handleSortEnd = ({ oldIndex: from, newIndex: to, collection }, _e) => {
       const startIdx = startIdxMap[collection] || 0;
       const result = [...fields];
 

@@ -1,38 +1,55 @@
-import { Banner, Table as TableSemi, Button, Toast, Descriptions, Tag } from '@douyinfe/semi-ui';
-import axios from 'axios';
-import { useEffect, useState, useMemo } from 'react';
+import { Banner, Button, Descriptions, Form, Select, Table as TableSemi, Toast } from '@douyinfe/semi-ui';
 import { useBoolean } from 'ahooks';
+import axios from 'axios';
+import { useEffect, useMemo, useState } from 'react';
 
+import { filterList } from '@/common/util';
+
+import { FILTER_KEYS, FieldLabels } from './const';
+import { Drawer } from './drawer';
 import { columns } from './field';
 import { mockData } from './mock';
+import { Mode, useUserStore } from './store';
 
 
 /* 是否展示mock开关，mock是开发阶段方便调试前端样式的，上线给别人使用需要设置成false */
-const isShowMockButton = true;
+const isShowMockButton = false;
 
 export const Table = () => {
   const [tableData, setTableData] = useState<any>([]);
+  const [tableDataActual, setTableDataActual] = useState<any>([]);
+  const [options, setOptions] = useState<any>([]);
+  console.log('@@@@2 ~ Table ~ options:', options)
   const [loading, setLoading] = useState(false);
   const [isStartMock, { toggle: changeMockStatus }] = useBoolean(false);
+  const setMode = useUserStore(state => state.setMode);
 
-  /* 获取表格数据 & 将表格数据放置在组件状态中 */
-  useEffect(() => {
-    if (isStartMock) {
-      setTableData(mockData);
-      return;
-    }
-
+  const getList = () => {
     setLoading(true);
-    axios.get('http://192.168.1.2:5050/pinfo_manage').then(response => {
+    axios.get('http://192.168.1.6:5050/pinfo_manage').then(response => {
       setLoading(false);
       console.log('@@@@ ~ 人员信息原始返回数据', response.data);
       const dataSource = response.data?.info || [];
+      const options = response.data?.options || [];
       setTableData(dataSource);
+      setTableDataActual(dataSource);
+      setOptions(options);
     }).catch(error => {
       setLoading(false);
       console.error('GET 请求失败:', error);
       Toast.error('请求出现问题')
     });
+  }
+
+  /* 获取表格数据 & 将表格数据放置在组件状态中 */
+  useEffect(() => {
+    if (isStartMock) {
+      setTableData(mockData);
+      setTableDataActual(mockData);
+      return;
+    }
+
+    getList();
   }, [isStartMock])
 
   const expandData = useMemo(() => {
@@ -45,9 +62,10 @@ export const Table = () => {
     }, {});
   }, [tableData]);
 
-  const expandRowRender = (record, index) => {
+  const expandRowRender = (record, _index) => {
     return <Descriptions align="left" data={expandData[record.id]} />;
   };
+
   const rowSelection = {
     // getCheckboxProps: record => ({
     //   disabled: record.name === '设计文档', // Column configuration not to be checked
@@ -63,6 +81,16 @@ export const Table = () => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
   };
+
+  console.log('@@@@2 ~ Table ~ rowSelection:', rowSelection)
+
+  const handleChange = ({ values }: any) => {    
+    const newData = filterList(values, tableData);
+
+    setTableDataActual(newData);
+  }
+
+
   return (
     <>
       {/* 介绍信息区：Banner */}
@@ -85,6 +113,29 @@ export const Table = () => {
         }
       />
 
+      {/* 筛选区 */}
+      <div className='flex items-center justify-between pl-[8px]'>
+        <div className='flex flex-wrap'>
+          <Form 
+            // @ts-ignore
+            labelPosition='inset'
+            layout='horizontal'
+            onChange={handleChange}
+          >
+            {
+              Object.keys(FILTER_KEYS)?.map(item => {
+                return (
+                  <Form.Select multiple field={item} label={FieldLabels[item]} showClear className='font-[500] font-[12px] w-[240px] mt-[10px]' placeholder={`请选择${FieldLabels[item]}`}>
+                    {(options?.find(option => option?.item?.value === item)?.optionList || [])?.map(i => (<Select.Option value={i?.key}>{i?.key}</Select.Option>))}
+                  </Form.Select>
+                )
+              })
+            }
+          </Form>
+        </div>
+        <Button type="primary" className='mt-[10px]' onClick={() => setMode(Mode.ADD)}>新增人员</Button>
+      </div>
+
       {/* 排班表格区：Tabel */}
       <div className="m-[8px] border border-[#ddd] rounded-[12px] overflow-hidden">
         <TableSemi
@@ -92,18 +143,21 @@ export const Table = () => {
           bordered
           empty={loading ? "正在加载人员信息" : "人员信息加载失败"}
           loading={loading}
-          columns={columns}
-          dataSource={tableData}
+          columns={columns as any}
+          dataSource={tableDataActual}
           pagination={false}
           expandedRowRender={expandRowRender}
           rowKey="id"
-          rowSelection={rowSelection}
+          // rowSelection={rowSelection}
           onRow={(record) => ({
-            className: record?.isworkday ? '!bg-[#fff]' : '!bg-[#eaf5ff]',
+            className: (record as any)?.isworkday ? '!bg-[#fff]' : '!bg-[#eaf5ff]',
           })}
           scroll={{ x: 1000, y: '70vh' }}
         />
       </div>
+
+      {/* 创建编辑区：Tabel */}
+      <Drawer options={options} refreshList={getList} />
     </>
   )
 }

@@ -1,6 +1,6 @@
 import { IconSemiLogo } from '@douyinfe/semi-icons';
-import { IconBadge, IconBreadcrumb, IconSteps, IconTreeSelect } from '@douyinfe/semi-icons-lab';
-import { Avatar, Dropdown, Layout, Nav } from '@douyinfe/semi-ui';
+import { IconBadge, IconBreadcrumb, IconTreeSelect } from '@douyinfe/semi-icons-lab';
+import { Layout, Nav } from '@douyinfe/semi-ui';
 import { useState } from 'react';
 import { Outlet, useMatches, useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import * as PathPattern from '@/app/route/path-pattern';
 
 
 export const NavBar = () => {
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Footer, Sider, Content } = Layout;
   const navigate = useNavigate();
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
@@ -18,61 +18,6 @@ export const NavBar = () => {
   const onOpenChange = (data: any) => {
     setOpenKeys([...data.openKeys]);
   };
-
-  const TopHeader = () => (
-    <Header style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
-      <div>
-        <Nav
-          mode={'horizontal'}
-          items={[
-            { itemKey: 'user', text: '用户管理', icon: <IconBadge /> },
-            { itemKey: 'union', text: '活动管理', icon: <IconTreeSelect /> },
-            {
-              itemKey: 'approve-management',
-              text: '审批管理',
-              icon: <IconBreadcrumb />,
-              items: [
-                '入驻审核',
-                {
-                  itemKey: 'operation-management',
-                  text: '运营管理',
-                  items: [
-                    '人员管理',
-                    '人员变更'
-                  ]
-                }
-              ]
-            },
-            {
-              text: '任务平台',
-              icon: <IconSteps />,
-              itemKey: 'job',
-              items: ['任务管理', '用户任务查询'],
-            },
-          ]}
-          onSelect={key => console.log(key)}
-          header={{
-            logo: <IconSemiLogo style={{ height: '36px', fontSize: 36 }} />,
-            text: '智能排班平台'
-          }}
-          footer={
-            <Dropdown
-              position="bottomRight"
-              render={
-                <Dropdown.Menu>
-                  <Dropdown.Item>详情</Dropdown.Item>
-                  <Dropdown.Item>退出</Dropdown.Item>
-                </Dropdown.Menu>
-              }
-            >
-              <Avatar size="small" color='light-blue' style={{ margin: 4 }}>洪琼</Avatar>
-              {/* <span>唐洪琼</span> */}
-            </Dropdown>
-          }
-        />
-      </div>
-    </Header>
-  );
 
   const LeftNav = () => (
     <Nav
@@ -86,11 +31,6 @@ export const NavBar = () => {
           itemKey: PathPattern.APPROVAL,
           text: '审批管理',
           icon: <IconBreadcrumb />,
-        },
-        {
-          itemKey: PathPattern.TASK,
-          text: '任务平台',
-          icon: <IconSteps />,
         },
         {
           itemKey: PathPattern.USER,
@@ -131,7 +71,6 @@ export const NavBar = () => {
 
   return (
     <Layout className='h-[98%] w-[98%] absolute overflow-hidden'>
-      <TopHeader />
       <Layout className='overflow-hidden'>
         <Sider className='bg-[#fbfbfb] overflow-hidden'>
           <LeftNav />

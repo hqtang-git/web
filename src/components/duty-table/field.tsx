@@ -2,6 +2,14 @@ import { Date } from '@/common/components/date';
 import { formatNil } from '@/common/util';
 
 
+const formatName = (value) => {
+  if (value?.length === 2) {
+    return <span>{value[0]}&nbsp;&nbsp;&nbsp;&nbsp;{value[1]}</span>
+  }
+
+  return formatNil(value);
+}
+
 /* 表头额外样式 */
 const onHeaderCell = () => ({
   style: {
@@ -24,7 +32,7 @@ const onCellLeader = () => ({
   style: {
       textAlign: 'center' as const,
       padding: '8px',
-      color: 'red'
+      color: 'blue'
   },
 });
 
@@ -53,19 +61,19 @@ export const columns = [
     children: [
       {
         title: '白班',
-        width: 100,
+        width: 80,
         onHeaderCell,
         onCell: onCellLeader,
         dataIndex: 'B2DLeader',
-        render: formatNil
+        render: formatName
       },
       {
         title: '夜班',
-        width: 100,
+        width: 80,
         dataIndex: 'B2NLeader',
         onHeaderCell,
         onCell: onCellLeader,
-        render: formatNil
+        render: formatName
       },
     ],
   },
@@ -74,19 +82,19 @@ export const columns = [
     children: [
       {
         title: '白班',
-        width: 100,
+        width: 80,
         dataIndex: 'B2DSystem',
         onHeaderCell,
         onCell,
-        render: formatNil
+        render: formatName
       },
       {
         title: '夜班',
-        width: 100,
+        width: 80,
         dataIndex: 'B2NSystem',
         onHeaderCell,
         onCell,
-        render: formatNil
+        render: formatName
       },
     ],
   },
@@ -95,31 +103,28 @@ export const columns = [
     children: [
       {
         title: '白班',
-        width: 100,
+        width: 80,
         dataIndex: 'B2DTech',
         onHeaderCell,
         onCell,
-        render: formatNil
+        render: formatName
       },
       {
         title: '夜班',
-        width: 100,
+        width: 80,
         dataIndex: 'B2NTech',
         onHeaderCell,
         onCell,
-        render: formatNil
+        render: formatName
       },
     ],
-  },
-  {
-    title: '北二跟学',
-    width: 100,
-    dataIndex: 'B2Trainee',
   },
   {
     title: '北三领班',
     dataIndex: 'B3Leader',
     onCell: onCellLeader,
+    width: 80,
+    render: formatName
   },
   {
     title: '北三系统',
@@ -129,16 +134,16 @@ export const columns = [
         dataIndex: 'B3DSystem',
         onHeaderCell,
         onCell,
-        width: 100,
-        render: formatNil
+        width: 80,
+        render: formatName
       },
       {
         title: '夜班',
         dataIndex: 'B3NSystem',
         onHeaderCell,
         onCell,
-        width: 100,
-        render: formatNil
+        width: 80,
+        render: formatName
       },
     ],
   },
@@ -147,37 +152,39 @@ export const columns = [
     children: [
       {
         title: '白班',
-        width: 100,
+        width: 80,
         dataIndex: 'B3DTech',
         onHeaderCell,
         onCell,
-        render: formatNil
+        render: formatName
       },
       {
         title: '夜班',
-        width: 100,
+        width: 80,
         dataIndex: 'B3NTech',
         onHeaderCell,
         onCell,
-        render: formatNil
+        render: formatName
       },
     ],
   },
   {
-    title: '北三跟学',
-    width: 100,
-    dataIndex: 'B3Trainee',
+    title: '辅助值班',
+    dataIndex: 'Assistant',
   },
   {
-    title: '辅助值班',
-    width: 100,
-    dataIndex: 'Assistant',
+    title: '北二跟学',
+    dataIndex: 'B2Trainee',
+  },
+  {
+    title: '北三跟学',
+    dataIndex: 'B3Trainee',
   },
 ].map(item => ({
   onHeaderCell,
   onCell,
-  width: 150,
-  render: formatNil,
+  width: 80,
+  render: formatName,
   ...item,
 }));
 

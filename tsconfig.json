@@ -12,11 +12,13 @@
     "types": [],
     "baseUrl": "./",
     "strict": true,
-    "moduleResolution": "Bundler",
-    "module": "Preserve",
+    "moduleResolution": "Node16",
+    "module": "Node16",
     "paths": {
       "@/*": ["./src/*"]
     },
+    "maxNodeModuleJsDepth": 10,
+    "typeRoots": ["./node_modules/@types"],
     "noImplicitAny": false
   },
   "include": ["src"],
